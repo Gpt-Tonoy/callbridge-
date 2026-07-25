@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0b3d2e">
+<title>Call Bridge</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.hidden{
+display:none!important;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ================= GAME TABLE ================= -->
+  <div id="game-table">
+
+    <div id="info-bar">
+      <div id="round-indicator">Round: <span id="round-number">1</span></div>
+      <div id="trump-indicator">Trump: <span id="trump-value">-</span></div>
+      <div id="turn-indicator">Turn: <span id="turn-value">-</span></div>
+      <button id="scoreboard-open-btn" type="button">Scoreboard</button>
+    </div>
+
+    <div id="table-grid">
+
+      <div id="seat-uncle" class="seat seat-top">
+        <div id="uncle-name" class="player-name">Uncle</div>
+        <div id="uncle-bid-display" class="bid-display">Bid: -</div>
+        <div id="uncle-tricks-display" class="tricks-display">Tricks: 0</div>
+        <div id="uncle-hand" class="hand"></div>
+        <div id="uncle-avatar" class="avatar"></div>
+      </div>
+
+      <div id="seat-brother" class="seat seat-left">
+        <div id="brother-name" class="player-name">Brother</div>
+        <div id="brother-bid-display" class="bid-display">Bid: -</div>
+        <div id="brother-tricks-display" class="tricks-display">Tricks: 0</div>
+        <div id="brother-hand" class="hand"></div>
+        <div id="brother-avatar" class="avatar"></div>
+      </div>
+
+      <div id="center-area">
+        <div id="trick-area">
+          <div id="trick-slot-uncle" class="trick-slot"></div>
+          <div id="trick-slot-brother" class="trick-slot"></div>
+          <div id="trick-slot-sister" class="trick-slot"></div>
+          <div id="trick-slot-me" class="trick-slot"></div>
+        </div>
+        <div id="deck-pile"></div>
+        <div id="message-banner"></div>
+      </div>
+
+      <div id="seat-sister" class="seat seat-right">
+        <div id="sister-name" class="player-name">Sister</div>
+        <div id="sister-bid-display" class="bid-display">Bid: -</div>
+        <div id="sister-tricks-display" class="tricks-display">Tricks: 0</div>
+        <div id="sister-hand" class="hand"></div>
+        <div id="sister-avatar" class="avatar"></div>
+      </div>
+
+      <div id="seat-me" class="seat seat-bottom">
+        <div id="me-name" class="player-name">Me</div>
+        <div id="me-bid-display" class="bid-display">Bid: -</div>
+        <div id="me-tricks-display" class="tricks-display">Tricks: 0</div>
+        <div id="me-hand" class="hand"></div>
+        <div id="me-avatar" class="avatar"></div>
+      </div>
+
+    </div>
+
+    <div id="action-bar">
+      <button id="sort-hand-btn" type="button">Sort</button>
+      <button id="play-card-btn" type="button" disabled>Play Card</button>
+    </div>
+
+  </div>
+
+  <!-- ================= OVERLAY: START GAME ================= -->
+  <div id="overlay-start" class="overlay">
+    <div class="overlay-box">
+      <h1 id="start-title">Call Bridge</h1>
+      <p id="start-subtitle">Offline 4-Player Individual Bridge</p>
+
+      <div id="player-name-form">
+        <label for="me-name-input">Your Name</label>
+        <input type="text" id="me-name-input" maxlength="12" placeholder="Me">
+      </div>
+
+      <button id="start-game-btn" type="button">Next</button>
+      <button id="start-continue-btn" type="button">Continue Saved Game</button>
+    </div>
+  </div>
+
+  <!-- ================= OVERLAY: TARGET SCORE ================= -->
+  <div id="overlay-target-score" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 id="target-score-title">Select Target Score</h2>
+
+      <div id="target-score-selector">
+        <button id="target-score-decrease-btn" type="button" aria-label="Decrease target score">-</button>
+        <div id="target-score-display">50</div>
+        <button id="target-score-increase-btn" type="button" aria-label="Increase target score">+</button>
+      </div>
+
+      <div id="target-score-range-hint">Min: 10 &nbsp;|&nbsp; Max: 200 &nbsp;|&nbsp; Step: 10</div>
+
+      <button id="deal-cards-btn" type="button">Deal Cards</button>
+    </div>
+  </div>
+
+  <!-- ================= OVERLAY: HUMAN BID ================= -->
+  <div id="overlay-human-bid" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 id="human-bid-title">Place Your Bid</h2>
+      <div id="human-bid-hand-preview"></div>
+
+      <div id="human-bid-selector">
+        <button id="human-bid-decrease-btn" type="button" aria-label="Decrease bid">-</button>
+        <div id="human-bid-display">1</div>
+        <button id="human-bid-increase-btn" type="button" aria-label="Increase bid">+</button>
+      </div>
+
+      <div id="human-bid-range-hint">Bid Range: 1 - 13</div>
+
+      <button id="human-bid-confirm-btn" type="button">Confirm Bid</button>
+    </div>
+  </div>
+
+  <!-- ================= OVERLAY: ROUND SUMMARY ================= -->
+  <div id="overlay-round-summary" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 id="round-summary-title">Round Summary</h2>
+
+      <table id="round-summary-table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Bid</th>
+            <th>Tricks</th>
+            <th>Round Score</th>
+          </tr>
+        </thead>
+        <tbody id="round-summary-body">
+          <tr id="round-summary-row-me">
+            <td id="round-summary-name-me">Me</td>
+            <td id="round-summary-bid-me">-</td>
+            <td id="round-summary-tricks-me">-</td>
+            <td id="round-summary-score-me">-</td>
+          </tr>
+          <tr id="round-summary-row-uncle">
+            <td id="round-summary-name-uncle">Uncle</td>
+            <td id="round-summary-bid-uncle">-</td>
+            <td id="round-summary-tricks-uncle">-</td>
+            <td id="round-summary-score-uncle">-</td>
+          </tr>
+          <tr id="round-summary-row-brother">
+            <td id="round-summary-name-brother">Brother</td>
+            <td id="round-summary-bid-brother">-</td>
+            <td id="round-summary-tricks-brother">-</td>
+            <td id="round-summary-score-brother">-</td>
+          </tr>
+          <tr id="round-summary-row-sister">
+            <td id="round-summary-name-sister">Sister</td>
+            <td id="round-summary-bid-sister">-</td>
+            <td id="round-summary-tricks-sister">-</td>
+            <td id="round-summary-score-sister">-</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button id="round-summary-continue-btn" type="button">Continue</button>
+    </div>
+  </div>
+
+  <!-- ================= OVERLAY: SCOREBOARD ================= -->
+  <div id="overlay-scoreboard" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 id="scoreboard-title">Scoreboard</h2>
+      <div id="scoreboard-target-display">Target: 50</div>
+
+      <table id="scoreboard-table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Total Score</th>
+          </tr>
+        </thead>
+        <tbody id="scoreboard-body">
+          <tr id="scoreboard-row-me">
+            <td id="scoreboard-name-me">Me</td>
+            <td id="scoreboard-score-me">0</td>
+          </tr>
+          <tr id="scoreboard-row-uncle">
+            <td id="scoreboard-name-uncle">Uncle</td>
+            <td id="scoreboard-score-uncle">0</td>
+          </tr>
+          <tr id="scoreboard-row-brother">
+            <td id="scoreboard-name-brother">Brother</td>
+            <td id="scoreboard-score-brother">0</td>
+          </tr>
+          <tr id="scoreboard-row-sister">
+            <td id="scoreboard-name-sister">Sister</td>
+            <td id="scoreboard-score-sister">0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button id="scoreboard-close-btn" type="button">Close</button>
+    </div>
+  </div>
+
+  <!-- ================= OVERLAY: GAME OVER ================= -->
+  <div id="overlay-game-over" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 id="game-over-title">Game Over</h2>
+      <div id="game-over-winner-display">Winner: -</div>
+
+      <table id="game-over-table">
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Final Score</th>
+          </tr>
+        </thead>
+        <tbody id="game-over-body">
+          <tr id="game-over-row-me">
+            <td id="game-over-name-me">Me</td>
+            <td id="game-over-score-me">0</td>
+          </tr>
+          <tr id="game-over-row-uncle">
+            <td id="game-over-name-uncle">Uncle</td>
+            <td id="game-over-score-uncle">0</td>
+          </tr>
+          <tr id="game-over-row-brother">
+            <td id="game-over-name-brother">Brother</td>
+            <td id="game-over-score-brother">0</td>
+          </tr>
+          <tr id="game-over-row-sister">
+            <td id="game-over-name-sister">Sister</td>
+            <td id="game-over-score-sister">0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button id="game-over-restart-btn" type="button">Play Again</button>
+    </div>
+  </div>
+
+</div>
+<script src="js/deck.js?v=100"></script>
+<script src="js/player.js?v=100"></script>
+<script src="js/ai.js?v=100"></script>
+<script src="js/bid.js?v=100"></script>
+<script src="js/score.js?v=100"></script>
+<script src="js/game.js?v=100"></script>
+<script src="js/ui.js?v=100"></script>
+<script src="script.js?v=100"></script>
+</body>
+</html>
+
+
