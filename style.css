@@ -606,18 +606,18 @@ input {
   letter-spacing: 0.4px;
 }
 
+/* ---------- Start Screen (matches reference app style) ---------- */
 #start-title {
-  font-size: 30px;
-  background: linear-gradient(180deg, #ffe083, #f0b429);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffd76a;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
 #start-subtitle {
-  margin: 0 0 22px;
+  margin: 0 0 40px;
   font-size: 12px;
-  color: rgba(234, 255, 243, 0.7);
+  color: rgba(234, 255, 243, 0.55);
   font-weight: 500;
 }
 
@@ -633,7 +633,7 @@ input {
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-  margin-bottom: 22px;
+  margin-bottom: 28px;
   text-align: left;
 }
 
@@ -649,13 +649,14 @@ input {
 #me-name-input {
   width: 100%;
   padding: 12px 14px;
-  border-radius: 12px;
+  border-radius: 30px;
   border: 1px solid rgba(255,255,255,0.15);
   background: rgba(0,0,0,0.25);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  text-align: center;
 }
 
 #me-name-input:focus {
@@ -663,15 +664,16 @@ input {
   box-shadow: 0 0 0 3px rgba(255, 215, 106, 0.25);
 }
 
-/* Generic premium buttons inside overlays */
+/* Generic pill-shaped buttons inside overlays, matching the
+   reference app's rounded "Resume / New Game" style */
 .overlay-box button {
   width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  font-size: 15px;
+  padding: 16px 18px;
+  border-radius: 999px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.3px;
-  margin-top: 10px;
+  margin-top: 14px;
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.15s ease;
 }
 
@@ -680,16 +682,16 @@ input {
 #human-bid-confirm-btn,
 #round-summary-continue-btn,
 #game-over-restart-btn {
-  color: #06281a;
-  background: linear-gradient(180deg, #ffe083, #f0b429);
-  box-shadow: 0 4px 0 #a97a10, 0 6px 14px rgba(0,0,0,0.4);
+  color: #4a2a00;
+  background: linear-gradient(180deg, #ffe9a0, #ffb347);
+  box-shadow: 0 4px 0 #c97a12, 0 6px 14px rgba(0,0,0,0.4);
 }
 
 #start-continue-btn,
 #scoreboard-close-btn {
-  color: #eafff3;
-  background: linear-gradient(180deg, #2f8f63, #1c5c40);
-  box-shadow: 0 4px 0 #123d2a, 0 6px 14px rgba(0,0,0,0.4);
+  color: #4a2a00;
+  background: linear-gradient(180deg, #ffcf7a, #ff9d3d);
+  box-shadow: 0 4px 0 #c26c10, 0 6px 14px rgba(0,0,0,0.4);
 }
 
 .overlay-box button:active {
@@ -904,4 +906,4 @@ input {
 .overlay-box::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,0.25);
   border-radius: 4px;
-  }
+   }
